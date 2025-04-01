@@ -10,3 +10,6 @@
 [submodule "src/thirdparty/dyncall"]
 	path = src/thirdparty/dyncall
 	url = https://github.com/LWJGL-CI/dyncall.git
+[submodule "src/thirdparty/python"]
+	path = src/thirdparty/python
+	url = https://github.com/python/cpython.git
