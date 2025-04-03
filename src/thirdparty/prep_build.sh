@@ -5,7 +5,7 @@
 sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources
 apt update
 # Python deps
-apt build-dep  python3
+apt build-dep -y python3
 apt install -y git \
                pkg-config \
                build-essential \
@@ -26,6 +26,8 @@ apt install -y git \
                tk-dev \
                uuid-dev \
                zlib1g-dev \
-               wget
+               wget \
+               cmake \
+               vim
 
 cd /src/src/thirdparty
