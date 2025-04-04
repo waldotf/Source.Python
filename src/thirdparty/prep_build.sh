@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Enable globbing for collecting libs/includes
+shopt -s globstar
+
 #Setup build container
 #Python build process insists on using build-dep...
 sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources
