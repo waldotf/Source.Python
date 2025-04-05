@@ -1,3 +1,0 @@
-#!/bin/bash
-#Someone smarter than me should turn this into a proper makefile
-#Use this for setting config options in deps...

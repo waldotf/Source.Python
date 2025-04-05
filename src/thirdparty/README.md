@@ -1,13 +1,28 @@
 # Dependencies
 
-Previous versions of Source.Python included compiled binaries and C++ header files in the repo. This both obscured the actual build process/flags for dependencies as well as made tracking versions difficult, with the benefit that compilation was simpler.
+Source.Python included compiled binaries and C++ header files in the repo. This both obscured the actual build process/flags for dependencies as well as made tracking versions difficult, with the benefit that compilation was simpler. Trying to make it a little more explicit/easy to follow by scripting the build process for each library.
 
 ## Building
 
-The shared libraries we're building ultimately need to be compatible with the 2013 SDK, so we're doing a sort of cross compile. As such, this will all be done in a container. I like Debian, so it will be Debian.
+The shared libraries we're building ultimately need to be compatible with the 2013 SDK, so we're doing a sort of cross compile. As such, this will all be done in an i386 container. I like Debian, so it will be Debian. Hopefully it's fine that this is a moldern version and we don't have strange glibc version issues...
 
-`prep_deps.sh` is to be run post-`git submodule update --init`, but outside the container to avoid permissions weirdness
+## How to use
 
-`prep_build.sh` should eventually be in a Dockerfile, but for now should be run interactively after `container.sh` as we're figuring it out.
+First, setup all submodules: `git submodule update --init` from root.
 
-The `build*` scripts are intended to be run inside the container, with some rough ordering -- python first, probably some other dependencies?
+Then, get your desired Python version by checking out the relevant branch (submodule pin is 3.12, should work with any).
+
+Next, start the container and setup all relevant packages/environment vars (eventually build this into an image, or at least an entrypoint script): `./container` -> `source /src/src/thirdparty/prep_build.sh`.
+
+Next, build each dependency. Some have dependencies; this order works:
+
+`build_python.sh` -> `build_boost.sh` -> `build_asmjit.sh` -> `build_dyncall.sh` -> `build_dynamichooks.sh`
+
+The scripts will build the relevant (portions of) the project, then vaccuum out the compiled shared object libraries (packing `.o`'s into `.a`'s as needed) as well as include files.
+
+Outputs are in `thirdparty/libs/` and `thirdparty/include/.
+
+## Status
+
+Everything other than dynamichooks builds; I'm either missing flags or there're source changes needed to make some cpp constructs play nice with gcc.
+
