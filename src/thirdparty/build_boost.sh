@@ -6,7 +6,12 @@ tar -zxvf boost_1_87_0.tar.gz && cd boost_1_87_0
 # Export libs
 cd ../../
 mkdir -p libs/boost/
-# Pack this into an archive
+# Pack python libs into into an archive
+rm libs/boost/libboost_python.a
 ar -cr libs/boost/libboost_python.a boost/boost_1_87_0/output/boost/bin.v2/libs/python/build/gcc-12/debug/x86_32/python-3.12/threading-multi/visibility-hidden/**/*.o
+rm libs/boost/libboost_filesystem.a
+ar -cr libs/boost/libboost_filesystem.a boost/boost_1_87_0/output/boost/bin.v2/libs/filesystem/build/gcc-12/debug/x86_32/threading-multi/visibility-hidden/**/*.o
+rm libs/boost/libboost_system.a
+ar -cr libs/boost/libboost_system.a boost/boost_1_87_0/output/boost/bin.v2/libs/system/build/gcc-12/debug/x86_32/threading-multi/visibility-hidden/**/*.o
 mkdir -p include/boost/
 cp -r boost/boost_1_87_0/boost include/boost/
