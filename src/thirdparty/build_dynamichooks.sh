@@ -2,5 +2,13 @@
 cd DynamicHooks
 chmod +x build-unix-x86-rel.sh
 ./build-unix-x86-rel.sh
-cd ../build/Release
-make all
+cd ..
+# Extract libs
+mkdir -p libs/dynamichooks/
+mkdir -p include/dynamichooks/
+cp DynamicHooks/Build/unix-x86/libDynamicHooks.a libs/dynamichooks/
+# Extract includes
+cp -r DynamicHooks/src/* include/dynamichooks/
+# Prune cpp files
+find include/dynamichooks/ -name *.cpp | xargs rm
+find include/dynamichooks/ -name *.txt | xargs rm
