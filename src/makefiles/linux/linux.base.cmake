@@ -67,8 +67,8 @@ If(SOURCE_ENGINE MATCHES "orangebox" OR SOURCE_ENGINE MATCHES "l4d2" OR SOURCE_E
         "${SOURCEPYTHON_LINK_LIBRARIES}"
         #${SOURCESDK_LIB}/linux64/public/tier2.a
         #${SOURCESDK_LIB}/linux64/public/tier3.a
-         ${SOURCESDK_LIB}/linux/public/libtier0_srv.so
-         ${SOURCESDK_LIB}/linux/public/libvstdlib_srv.so
+         ${SOURCESDK_LIB}/public/linux/libtier0_srv.so
+         ${SOURCESDK_LIB}/public/linux/libvstdlib_srv.so
     )
 EndIf()
 
@@ -132,11 +132,11 @@ Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_NDEBUG")
 # correctly...
 # ------------------------------------------------------------------
 Set(SOURCEPYTHON_LINK_LIBRARIES_RELEASE
-    ${PYTHONSDK_LIB}/libpython3.6m.a
-    ${PYTHONSDK_LIB}/libpython3.6m.so.1.0
+    ${PYTHONSDK_LIB}/libpython3.12.a
+    ${PYTHONSDK_LIB}/libpython3.12.so.1.0
     ${BOOSTSDK_LIB}/libboost_python.a
     ${DYNAMICHOOKSSDK_LIB}/libDynamicHooks.a
-    ${ASMJITSDK_LIB}/libAsmJit.a
+    ${ASMJITSDK_LIB}/libasmjit.a
     ${DYNCALLSDK_LIB}/libdyncall_s.a
     ${DYNCALLSDK_LIB}/libdyncallback_s.a
     ${DYNCALLSDK_LIB}/libdynload_s.a
