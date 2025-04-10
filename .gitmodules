@@ -7,3 +7,6 @@
 [submodule "src/thirdparty/python"]
 	path = src/thirdparty/python
 	url = https://github.com/python/cpython.git
+[submodule "DynamicHooks"]
+	path = src/thirdparty/DynamicHooks
+	url = https://github.com/waldotf/DynamicHooks.git
