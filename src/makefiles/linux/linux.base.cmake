@@ -136,7 +136,7 @@ Set(SOURCEPYTHON_LINK_LIBRARIES_RELEASE
     ${PYTHONSDK_LIB}/libpython3.12.so.1.0
     ${BOOSTSDK_LIB}/libboost_python.a
     ${DYNAMICHOOKSSDK_LIB}/libDynamicHooks.a
-    ${ASMJITSDK_LIB}/libasmjit.a
+    ${ASMJITSDK_LIB}/libasmjit.so
     ${DYNCALLSDK_LIB}/libdyncall_s.a
     ${DYNCALLSDK_LIB}/libdyncallback_s.a
     ${DYNCALLSDK_LIB}/libdynload_s.a
