@@ -30,6 +30,7 @@
 //-----------------------------------------------------------------------------
 // Includes.
 //-----------------------------------------------------------------------------
+#include "game/server/player.h"
 #include "public/game/server/iplayerinfo.h"
 #include "boost/python.hpp"
 using namespace boost::python;

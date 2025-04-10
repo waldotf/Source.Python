@@ -35,7 +35,7 @@ void export_engine_specific_steamid(scope _steam, T SteamID)
 template<class T>
 void export_engine_specific_account_type(scope _steam, T AccountType)
 {
-	AccountType.value("P2P_SUPER_SEEDER", k_EAccountTypeP2PSuperSeeder);
+	AccountType.value("CONSOLE_USER", k_EAccountTypeConsoleUser);
 }
 
 #endif // _STEAM_WRAP_ORANGEBOX_H

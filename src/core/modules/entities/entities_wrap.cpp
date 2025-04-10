@@ -297,10 +297,6 @@ void export_server_networkable(scope _entities)
 			&IServerNetworkable::Release
 		)
 
-		.def("area_num",
-			&IServerNetworkable::AreaNum
-		)
-
 		/*
 		.def("get_base_networkable",
 			&IServerNetworkable::GetBaseNetworkable,
@@ -353,10 +349,6 @@ void export_edict(scope _entities)
 			&CBaseEdict::SetEdict,
 			"Set when initting an entity. If it's only a networkable, this is false.",
 			args("unknown", "full_edict")
-		)
-
-		.add_property("area_num",
-			&CBaseEdict::AreaNum
 		)
 
 		.add_property("classname",
@@ -481,24 +473,24 @@ void export_entity_generator(scope _entities)
 void export_take_damage_info(scope _entities)
 {
 	class_<CTakeDamageInfo, CTakeDamageInfo *> TakeDamageInfo("TakeDamageInfo");
-	
+
 	// Initializers...
 	TakeDamageInfo.def("__init__", make_constructor(&TakeDamageInfoSharedExt::__init__));
-	
+
 	// Properties...
 	TakeDamageInfo.add_property("force", &CTakeDamageInfo::GetDamageForce, &CTakeDamageInfo::SetDamageForce);
 	TakeDamageInfo.add_property("position", &CTakeDamageInfo::GetDamagePosition, &CTakeDamageInfo::SetDamagePosition);
-	
+
 	TakeDamageInfo.add_property("reported_position", &CTakeDamageInfo::GetReportedPosition,
 		&CTakeDamageInfo::SetReportedPosition
 	);
-	
+
 	TakeDamageInfo.add_property("damage", &CTakeDamageInfo::GetDamage, &CTakeDamageInfo::SetDamage);
 	TakeDamageInfo.add_property("base_damage", &CTakeDamageInfo::GetBaseDamage, &TakeDamageInfoSharedExt::set_base_damage);
 	TakeDamageInfo.add_property("type", &CTakeDamageInfo::GetDamageType, &CTakeDamageInfo::SetDamageType);
 	TakeDamageInfo.add_property("stats", &CTakeDamageInfo::GetDamageStats, &CTakeDamageInfo::SetDamageStats);
 	TakeDamageInfo.add_property("ammo", &CTakeDamageInfo::GetAmmoType, &CTakeDamageInfo::SetAmmoType);
-	
+
 	TakeDamageInfo.add_property("damaged_other_players", &TakeDamageInfoSharedExt::get_damaged_other_players,
 		&TakeDamageInfoSharedExt::set_damaged_other_players
 	);
@@ -506,15 +498,15 @@ void export_take_damage_info(scope _entities)
 	TakeDamageInfo.add_property("inflictor", &TakeDamageInfoSharedExt::get_inflictor, &TakeDamageInfoSharedExt::set_inflictor);
 	TakeDamageInfo.add_property("attacker", &TakeDamageInfoSharedExt::get_attacker, &TakeDamageInfoSharedExt::set_attacker);
 	TakeDamageInfo.add_property("weapon", &TakeDamageInfoSharedExt::get_weapon, &TakeDamageInfoSharedExt::set_weapon);
-	
+
 	// CS:GO properties...
 	TakeDamageInfo.NOT_IMPLEMENTED_ATTR("radius");
 	TakeDamageInfo.NOT_IMPLEMENTED_ATTR("bullet");
 	TakeDamageInfo.NOT_IMPLEMENTED_ATTR("recoil");
-	
+
 	// Engine specific stuff...
 	export_engine_specific_take_damage_info(_entities, TakeDamageInfo);
-	
+
 	// Add memory tools...
 	TakeDamageInfo ADD_MEM_TOOLS(CTakeDamageInfo);
 }
@@ -564,10 +556,10 @@ void export_check_transmit_info(scope _entities)
 
 	//CBitVec<MAX_EDICTS>	*m_pTransmitEdict;	// entity n is already marked for transmission
 	//CBitVec<MAX_EDICTS>	*m_pTransmitAlways; // entity n is always sent even if not in PVS (HLTV and Replay only)
-	
+
 	CheckTransmitInfo.def_readwrite("areas_networked", &CCheckTransmitInfo::m_AreasNetworked, "Number of networked areas.");
 	//int		m_Areas[MAX_WORLD_AREAS]; // the areas
-	
+
 	// This is used to determine visibility, so if the previous state
 	// is the same as the current state (along with pvs and areas networked),
 	// then the parts of the map that the player can see haven't changed.

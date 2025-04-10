@@ -218,9 +218,11 @@ bool CSourcePython::Load(	CreateInterfaceFn interfaceFactory, CreateInterfaceFn 
 #else
 	DevMsg(1, MSG_PREFIX "Connecting tier1 libraries...\n");
 	ConnectTier1Libraries( &interfaceFactory, 1 );
-
+#  if !defined(ENGINE_ORANGEBOX)
 	DevMsg(1, MSG_PREFIX "Connecting tier2 libraries...\n");
 	ConnectTier2Libraries( &interfaceFactory, 2 );
+#  endif
+
 #endif
 
 	// Get all engine interfaces.
@@ -234,14 +236,14 @@ bool CSourcePython::Load(	CreateInterfaceFn interfaceFactory, CreateInterfaceFn 
 	if( !GetInterfaces(gGameInterfaces, gameServerFactory) ) {
 		return false;
 	}
-	
+
 	DevMsg(1, MSG_PREFIX "Retrieving global variables...\n");
 	gpGlobals = playerinfomanager->GetGlobalVars();
 	if (!gpGlobals) {
 		Msg(MSG_PREFIX "Could retrieve global variables.\n");
 		return false;
 	}
-	
+
 	DevMsg(1, MSG_PREFIX "Initializing mathlib...\n");
 	MathLib_Init( 2.2f, 2.2f, 0.0f, 2.0f );
 
@@ -279,7 +281,7 @@ bool CSourcePython::Load(	CreateInterfaceFn interfaceFactory, CreateInterfaceFn 
 		HOOKTYPE_POST));
 
 	InitHooks();
-	
+
 	Msg(MSG_PREFIX "Loaded successfully.\n");
 	return true;
 }
@@ -317,8 +319,10 @@ void CSourcePython::Unload( void )
 	DevMsg(1, MSG_PREFIX "Disconnecting interfaces...\n");
 	DisconnectInterfaces();
 #else
+#  if !defined(ENGINE_ORANGEBOX)
 	DevMsg(1, MSG_PREFIX "Disconnecting tier2 libraries...\n");
 	DisconnectTier2Libraries( );
+#  endif
 
 	DevMsg(1, MSG_PREFIX "Disconnecting tier1 libraries...\n");
 	DisconnectTier1Libraries( );
@@ -371,7 +375,7 @@ void CSourcePython::ServerActivate( edict_t *pEdictList, int edictCount, int cli
 	list edicts;
 	for(int i=0; i < edictCount; i++)
 		edicts.append(pEdictList[i]);
-	
+
 	CALL_LISTENERS(OnServerActivate, edicts, edictCount, clientMax);
 }
 
@@ -507,7 +511,7 @@ void CSourcePython::ClientFullyConnect( edict_t *pEntity )
 }
 #endif
 
-#if defined(ENGINE_CSGO) || defined(ENGINE_BMS) || defined(ENGINE_BLADE)
+#if defined(ENGINE_CSGO) || defined(ENGINE_BMS) || defined(ENGINE_BLADE) || defined(ENGINE_ORANGEBOX)
 void CSourcePython::OnEdictAllocated( edict_t *edict )
 {
 	unsigned int iEntityIndex;
@@ -560,7 +564,7 @@ void CSourcePython::OnEntityCreated( CBaseEntity *pEntity )
 
 	static object Entity = import("entities").attr("entity").attr("Entity");
 	object oEntity = Entity(uiIndex);
-	
+
 	GET_LISTENER_MANAGER(OnNetworkedEntityCreated, on_networked_entity_created_manager);
 	if (on_networked_entity_created_manager->GetCount()) {
 		CALL_LISTENERS_WITH_MNGR(on_networked_entity_created_manager, oEntity);
@@ -641,7 +645,7 @@ void CSourcePython::OnDataUnloaded( MDLCacheDataType_t type, MDLHandle_t handle 
 
 	CALL_LISTENERS(OnDataUnloaded, type, handle);
 }
-	
+
 #if defined(ENGINE_CSGO) || defined(ENGINE_BLADE)
 void CSourcePython::OnCombinerPreCache(MDLCacheDataType_t type, MDLHandle_t handle )
 {

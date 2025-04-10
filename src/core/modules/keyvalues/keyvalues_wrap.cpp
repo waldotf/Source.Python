@@ -32,8 +32,8 @@
 
 
 
-// Really hacky way to access the private member function RecursiveCopyKeyValues.
-// It's done by replacing the declaration of RecursiveCopyKeyValues with a dummy
+// Really hacky way to access the private member function CopyKeyValuesFromRecursive.
+// It's done by replacing the declaration of CopyKeyValuesFromRecursive with a dummy
 // method, a friend function declaration and the actual declaration that got
 // replaced.
 // This is done, so we don't need to patch KeyValues.h. #define private public
@@ -41,26 +41,26 @@
 // function as a private symbol name, and keyvalues_wrap.cpp would try to look up
 // the function using its public symbol name).
 /*
-	void RecursiveCopyKeyValues( KeyValues& src );
+	void CopyKeyValuesFromRecursive( KeyValues& src );
 
 	REPLACED BY:
 
-	void JustFinishTheDeclaration() {} 
-	friend void RecursiveCopyKeyValuesHack(KeyValues* pThis, KeyValues& src); 
-	void RecursiveCopyKeyValues( KeyValues& src );
+	void JustFinishTheDeclaration() {}
+	friend void RecursiveCopyKeyValuesHack(KeyValues* pThis, KeyValues& src);
+	void CopyKeyValuesFromRecursive( KeyValues& src );
 */
-#define RecursiveCopyKeyValues \
+#define CopyKeyValuesFromRecursive \
 	JustFinishTheDeclaration() {} \
 	friend void RecursiveCopyKeyValuesHack(KeyValues* pThis, KeyValues& src); \
-	void RecursiveCopyKeyValues
+	void CopyKeyValuesFromRecursive
 
 #include "tier1/KeyValues.h"
 
 // Now, remove the replacement, so the friend function can call the member function.
-#define RecursiveCopyKeyValues RecursiveCopyKeyValues
+#define CopyKeyValuesFromRecursive CopyKeyValuesFromRecursive
 void RecursiveCopyKeyValuesHack(KeyValues* pThis, KeyValues& src)
 {
-	pThis->RecursiveCopyKeyValues(src);
+	pThis->CopyKeyValuesFromRecursive(src);
 }
 
 
@@ -168,7 +168,7 @@ void export_keyvalues(scope _keyvalues)
 			an integer, of value 1 higher than the highest other integer key name.",
 			reference_existing_object_policy()
 		)
-		
+
 		.def("add_sub_key",
 			&KeyValues::AddSubKey,
 			"Adds a sub key. Make sure the subkey isn't a child of some other KeyValues.",
@@ -190,8 +190,8 @@ void export_keyvalues(scope _keyvalues)
 		)
 
 		.add_property("next_key",
-			make_function(
-				&KeyValues::GetNextKey,
+			make_function<>(
+				static_cast<KeyValues *(KeyValues::*)()>(&KeyValues::GetNextKey),
 				reference_existing_object_policy()
 			),
 			&KeyValues::SetNextKey,
@@ -337,7 +337,7 @@ void export_keyvalues(scope _keyvalues)
 			&KeyValuesExt::__iter__,
 			"Return an iterator that will iterate over all keys."
 		)
-			
+
 		.def("as_dict",
 			&KeyValuesExt::as_dict,
 			"Return the KeyValues object as a dict."
@@ -359,7 +359,7 @@ void export_keyvalues(scope _keyvalues)
 void export_keyvalues_types(scope _keyvalues)
 {
 	enum_<KeyValues::types_t> KeyValuesType("KeyValueType");
-	
+
 	KeyValuesType.value("NONE", KeyValues::TYPE_NONE);
 	KeyValuesType.value("STRING", KeyValues::TYPE_STRING);
 	KeyValuesType.value("INT", KeyValues::TYPE_INT);
@@ -368,7 +368,7 @@ void export_keyvalues_types(scope _keyvalues)
 	KeyValuesType.value("WSTRING", KeyValues::TYPE_WSTRING);
 	KeyValuesType.value("COLOR", KeyValues::TYPE_COLOR);
 	KeyValuesType.value("UNINT64", KeyValues::TYPE_UINT64);
-	
+
 #ifdef ENGINE_CSGO
 	// TODO: Move this to a engine specific file
 	KeyValuesType.value("COMPILED_INT_BYTE", KeyValues::TYPE_COMPILED_INT_BYTE);
