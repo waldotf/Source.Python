@@ -45,8 +45,8 @@ Set(DYNCALLSDK_LIB         ${THIRDPARTY_LIB}/dyncall)
 # ------------------------------------------------------------------
 # AsmJit specific.
 # ------------------------------------------------------------------
-Set(ASMJITSDK_INCLUDE     ${THIRDPARTY_INCLUDE}/asmjit)
-Set(ASMJITSDK_LIB         ${THIRDPARTY_LIB}/asmjit)
+Set(ASMJITSDK_INCLUDE     ${THIRDPARTY_INCLUDE}/AsmJit)
+Set(ASMJITSDK_LIB         ${THIRDPARTY_LIB}/AsmJit)
 
 # ------------------------------------------------------------------
 # DynamicHooks specific.
