@@ -12,11 +12,13 @@ cd ../../..
 mkdir -p libs/AsmJit/
 cp AsmJit/build/Release/libasmjit.so libs/AsmJit/
 mkdir -p include/AsmJit/
-cp -r AsmJit/src/* include/AsmJit/
+cp -r AsmJit/src/asmjit/* include/AsmJit/
 # Prune cpp files
 find include/AsmJit/ -name *.cpp | xargs rm
 
 # Also copy to DynamicHooks submodule since we build that next
 rm -rf DynamicHooks/src/thirdparty/AsmJit/include/*
+mkdir -p DynamicHooks/src/thirdparty/AsmJit/lib
 cp libs/AsmJit/libasmjit.so DynamicHooks/src/thirdparty/AsmJit/lib/
-cp -r include/AsmJit DynamicHooks/src/thirdparty/AsmJit/include/
+mkdir -p DynamicHooks/src/thirdparty/AsmJit/include
+cp -r include/AsmJit/* DynamicHooks/src/thirdparty/AsmJit/include/

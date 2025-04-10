@@ -1,10 +1,10 @@
 #!/bin/bash
 cd dyncall
 # Set DASMJIT_STATIC for cmake
-mkdir build && cd build
+mkdir -p build && cd build
 ../configure
 make
-cd ..
+cd ../..
 # Extract libs
 mkdir -p libs/dyncall/
 mkdir -p include/dyncall/
