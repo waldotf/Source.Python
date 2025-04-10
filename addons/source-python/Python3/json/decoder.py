@@ -50,17 +50,18 @@ _CONSTANTS = {
 }
 
 
+HEXDIGITS = re.compile(r'[0-9A-Fa-f]{4}', FLAGS)
 STRINGCHUNK = re.compile(r'(.*?)(["\\\x00-\x1f])', FLAGS)
 BACKSLASH = {
     '"': '"', '\\': '\\', '/': '/',
     'b': '\b', 'f': '\f', 'n': '\n', 'r': '\r', 't': '\t',
 }
 
-def _decode_uXXXX(s, pos):
-    esc = s[pos + 1:pos + 5]
-    if len(esc) == 4 and esc[1] not in 'xX':
+def _decode_uXXXX(s, pos, _m=HEXDIGITS.match):
+    esc = _m(s, pos + 1)
+    if esc is not None:
         try:
-            return int(esc, 16)
+            return int(esc.group(), 16)
         except ValueError:
             pass
     msg = "Invalid \\uXXXX escape"
@@ -103,7 +104,8 @@ def py_scanstring(s, end, strict=True,
         try:
             esc = s[end]
         except IndexError:
-            raise JSONDecodeError("Unterminated string starting at", s, begin)
+            raise JSONDecodeError("Unterminated string starting at",
+                                  s, begin) from None
         # If not a unicode escape sequence, must be in the lookup table
         if esc != 'u':
             try:
@@ -251,7 +253,7 @@ def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
 
 
 class JSONDecoder(object):
-    """Simple JSON <http://json.org> decoder
+    """Simple JSON <https://json.org> decoder
 
     Performs the following translations in decoding by default:
 
@@ -291,10 +293,8 @@ class JSONDecoder(object):
         ``object_pairs_hook``, if specified will be called with the result of
         every JSON object decoded with an ordered list of pairs.  The return
         value of ``object_pairs_hook`` will be used instead of the ``dict``.
-        This feature can be used to implement custom decoders that rely on the
-        order that the key and value pairs are decoded (for example,
-        collections.OrderedDict will remember the order of insertion). If
-        ``object_hook`` is also defined, the ``object_pairs_hook`` takes
+        This feature can be used to implement custom decoders.
+        If ``object_hook`` is also defined, the ``object_pairs_hook`` takes
         priority.
 
         ``parse_float``, if specified, will be called with the string
@@ -316,7 +316,6 @@ class JSONDecoder(object):
         characters will be allowed inside strings.  Control characters in
         this context are those with character codes in the 0-31 range,
         including ``'\\t'`` (tab), ``'\\n'``, ``'\\r'`` and ``'\\0'``.
-
         """
         self.object_hook = object_hook
         self.parse_float = parse_float or float
