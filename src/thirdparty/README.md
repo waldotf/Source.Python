@@ -24,5 +24,4 @@ Outputs are in `thirdparty/libs/` and `thirdparty/include/.
 
 ## Status
 
-Everything other than dynamichooks builds; I'm either missing flags or there are source changes needed to make some cpp constructs play nice with gcc.
-
+Seems to all build. Patched build as well; now need to fix `/addons/` for the new version...
