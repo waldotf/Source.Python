@@ -29,13 +29,14 @@
 // ============================================================================
 // Boost
 #include "boost/unordered_map.hpp"
+#include "boost/bind.hpp"
+#include <functional>
 
 // Source.Python
 #include "utilities/conversions.h"
 
 #include "entities_datamaps.h"
 #include ENGINE_INCLUDE_PATH(entities_datamaps_wrap.h)
-
 
 // ============================================================================
 // >> TYPEDEFS
@@ -143,7 +144,7 @@ int DataMapSharedExt::find_offset(datamap_t* pDataMap, const char* name)
 			offsets = g_DataMapsCache.insert(std::make_pair(pDataMap->dataClassName, OffsetsMap())).first;
 			AddDataMap(pDataMap, offsets->second);
 		}
-		
+
 		OffsetsMap::iterator result = offsets->second.find(name);
 		if (result == offsets->second.end())
 		{
