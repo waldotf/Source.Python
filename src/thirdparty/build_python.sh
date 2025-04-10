@@ -14,3 +14,4 @@ mkdir -p libs/python/
 cp python/build/libpython3.12.a python/build/libpython3.12.so.1.0 libs/python/
 mkdir -p include/python/
 cp -r python/Include/* include/python/
+cp python/build/pyconfig.h include/python/
