@@ -7,8 +7,8 @@
 # ------------------------------------------------------------------
 # We only need a release and debug configuration.
 # ------------------------------------------------------------------
-Set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING 
-	"Only do Release and Debug" 
+Set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING
+	"Only do Release and Debug"
 	FORCE
 )
 
@@ -25,32 +25,34 @@ Set(SOURCESDK            ${SOURCESDK_DIR}/${BRANCH})
 Set(SOURCESDK_LIB        ${SOURCESDK}/lib)
 
 # ------------------------------------------------------------------
+# Thirdparty libraries.
+# ------------------------------------------------------------------
+Set(THIRDPARTY_INCLUDE   ${THIRDPARTY_DIR}/include)
+Set(THIRDPARTY_LIB       ${THIRDPARTY_DIR}/libs)
+
+# ------------------------------------------------------------------
 # Boost specific.
 # ------------------------------------------------------------------
-Set(BOOSTSDK             ${THIRDPARTY_DIR}/boost)
-Set(BOOSTSDK_INCLUDE     ${BOOSTSDK}) # ..needed to allow #include <boost/xx.hpp>
-Set(BOOSTSDK_LIB         ${BOOSTSDK}/lib)
+Set(BOOSTSDK_INCLUDE     ${THIRDPARTY_INCLUDE}/boost) # ..needed to allow #include <boost/xx.hpp>
+Set(BOOSTSDK_LIB         ${THIRDPARTY_LIB}/boost)
 
 # ------------------------------------------------------------------
 # Dyncall specific.
 # ------------------------------------------------------------------
-Set(DYNCALLSDK           ${THIRDPARTY_DIR}/dyncall)
-Set(DYNCALLSDK_INCLUDE   ${DYNCALLSDK}/include)
-Set(DYNCALLSDK_LIB       ${DYNCALLSDK}/lib)
+Set(DYNCALLSDK_INCLUDE     ${THIRDPARTY_INCLUDE}/dyncall)
+Set(DYNCALLSDK_LIB         ${THIRDPARTY_LIB}/dyncall)
 
 # ------------------------------------------------------------------
 # AsmJit specific.
 # ------------------------------------------------------------------
-Set(ASMJITSDK         ${THIRDPARTY_DIR}/AsmJit)
-Set(ASMJITSDK_INCLUDE ${ASMJITSDK}/include)
-Set(ASMJITSDK_LIB     ${ASMJITSDK}/lib)
+Set(ASMJITSDK_INCLUDE     ${THIRDPARTY_INCLUDE}/asmjit)
+Set(ASMJITSDK_LIB         ${THIRDPARTY_LIB}/asmjit)
 
 # ------------------------------------------------------------------
 # DynamicHooks specific.
 # ------------------------------------------------------------------
-Set(DYNAMICHOOKSSDK           ${THIRDPARTY_DIR}/DynamicHooks)
-Set(DYNAMICHOOKSSDK_INCLUDE   ${DYNAMICHOOKSSDK}/include)
-Set(DYNAMICHOOKSSDK_LIB       ${DYNAMICHOOKSSDK}/lib)
+Set(DYNAMICHOOKSSDK_INCLUDE     ${THIRDPARTY_INCLUDE}/dynamichooks)
+Set(DYNAMICHOOKSSDK_LIB         ${THIRDPARTY_LIB}/dynamichooks)
 
 # ------------------------------------------------------------------
 # Include directories
@@ -79,6 +81,7 @@ Add_Definitions(
     -DBOOST_PYTHON_STATIC_LIB
     -DBOOST_PYTHON_SOURCE
     -DBOOST_PYTHON_NO_LIB
+    -DASMJIT_STATIC # Required for projects linking AsmJit statically.
 )
 
 # ------------------------------------------------------------------

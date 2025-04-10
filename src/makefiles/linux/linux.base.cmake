@@ -20,9 +20,8 @@ Endif(NOT CMAKE_BUILD_TYPE)
 # ------------------------------------------------------------------
 # Python directories
 # ------------------------------------------------------------------
-Set(PYTHONSDK            ${THIRDPARTY_DIR}/python_linux)
-Set(PYTHONSDK_INCLUDE    ${PYTHONSDK}/include)
-Set(PYTHONSDK_LIB        ${PYTHONSDK}/libs)
+Set(PYTHONSDK_INCLUDE    ${THIRDPARTY_INCLUDE}/python)
+Set(PYTHONSDK_LIB        ${THIRDPARTY_LIB}/python)
 
 # ------------------------------------------------------------------
 # Add in the python sdk as an include directory.
@@ -54,8 +53,8 @@ If(SOURCE_ENGINE MATCHES "bms")
 Else()
     Set(SOURCEPYTHON_LINK_LIBRARIES
         "${SOURCEPYTHON_LINK_LIBRARIES}"
-        ${SOURCESDK_LIB}/linux/mathlib_i486.a
-        ${SOURCESDK_LIB}/linux/tier1_i486.a
+        ${SOURCESDK_LIB}/public/linux/mathlib_i486.a
+        ${SOURCESDK_LIB}/public/linux/tier1_i486.a
     )
 EndIf()
 
@@ -66,10 +65,10 @@ If(SOURCE_ENGINE MATCHES "orangebox" OR SOURCE_ENGINE MATCHES "l4d2" OR SOURCE_E
     # Orangebox has all the tier libraries.
     Set(SOURCEPYTHON_LINK_LIBRARIES
         "${SOURCEPYTHON_LINK_LIBRARIES}"
-         ${SOURCESDK_LIB}/linux/tier2_i486.a
-         ${SOURCESDK_LIB}/linux/tier3_i486.a
-         ${SOURCESDK_LIB}/linux/libtier0_srv.so
-         ${SOURCESDK_LIB}/linux/libvstdlib_srv.so
+        #${SOURCESDK_LIB}/linux64/public/tier2.a
+        #${SOURCESDK_LIB}/linux64/public/tier3.a
+         ${SOURCESDK_LIB}/linux/public/libtier0_srv.so
+         ${SOURCESDK_LIB}/linux/public/libvstdlib_srv.so
     )
 EndIf()
 
@@ -113,14 +112,14 @@ Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-conversion-null -Wno-write-strings"
 Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-invalid-offsetof -Wno-reorder")
 
 # Others
-Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpmath=sse -msse -m32 -fno-strict-aliasing")
+Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=pentium4 -march=core2 -mfpmath=sse -msse -m32 -fno-strict-aliasing")
 Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -fno-threadsafe-statics -v -fvisibility=hidden")
 
 
 # ------------------------------------------------------------------
 # Linux linker flags.
 # ------------------------------------------------------------------
-Set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--exclude-libs,libprotobuf.a")
+Set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--exclude-libs,libprotobuf.a -Wl,-z,defs")
 
 
 # ------------------------------------------------------------------
