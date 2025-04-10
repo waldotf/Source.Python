@@ -30,7 +30,7 @@
 // Definitions
 //---------------------------------------------------------------------------------
 #define PYLIB_NAME_WIN32	"Python3/plat-win/python36.dll"
-#define PYLIB_NAME_LINUX	"Python3/plat-linux/libpython3.6m.so.1.0"
+#define PYLIB_NAME_LINUX    "Python3/config-3.12-i386-linux-gnu/libpython3.12.a"
 
 #define CORE_NAME_WIN32		"bin/core.dll"
 #define CORE_NAME_LINUX		"bin/core.so"
@@ -46,7 +46,6 @@
 #	define VCRUNTIME_LIB "Python3/plat-win/vcruntime140.dll"
 #elif defined(LINUX)
 #	define PYLIB_NAME PYLIB_NAME_LINUX
-#	define ZLIB_LIB "Python3/plat-linux/libz.so.1.2.11"
 #endif
 
 #define MAX_PATH_LENGTH 1024
