@@ -81,7 +81,7 @@ Add_Definitions(
     -DBOOST_PYTHON_STATIC_LIB
     -DBOOST_PYTHON_SOURCE
     -DBOOST_PYTHON_NO_LIB
-    -DASMJIT_STATIC # Required for projects linking AsmJit statically.
+    -DASMJIT_STATIC # https://asmjit.com/doc/group__asmjit__build.html
 )
 
 # ------------------------------------------------------------------
