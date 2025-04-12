@@ -91,9 +91,9 @@ inline void PrintCurrentException(bool bLogged = true)
 //-----------------------------------------------------------------------------
 // Returns True if the class name of the given object equals the given string.
 //-----------------------------------------------------------------------------
-inline bool CheckClassname(object obj, char* name)
+inline bool CheckClassname(object obj, const char* name)
 {
-	return strcmp(extract<char *>(obj.attr("__class__").attr("__name__")), name) == 0;
+	return strcmp(extract<const char *>(obj.attr("__class__").attr("__name__")), name) == 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -117,7 +117,7 @@ inline object get_class_object()
 	const converter::registration *pRegistration = converter::registry::query(typeid(T));
 	if (!pRegistration || !pRegistration->m_class_object)
 		return object();
-	
+
 	return object(handle<>(borrowed(upcast<PyObject>(pRegistration->m_class_object))));
 }
 
@@ -129,7 +129,7 @@ return_type GetItemIndexer(cls* self, int iIndex)
 {
 	if ((iIndex < iMin) || (iIndex > iMax))
 		BOOST_RAISE_EXCEPTION(PyExc_IndexError, "Index out of range.");
-		
+
 	return (*self)[iIndex];
 }
 
@@ -144,7 +144,7 @@ void SetItemIndexer(cls* self, int iIndex, value_type value)
 {
 	if ((iIndex < iMin) || (iIndex > iMax))
 		BOOST_RAISE_EXCEPTION(PyExc_IndexError, "Index out of range.");
-		
+
 	(*self)[iIndex] = value;
 }
 

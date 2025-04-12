@@ -152,7 +152,7 @@ bool CPointer::IsOverlapping(object oOther, unsigned long ulNumBytes)
 }
 
 void* SearchBytesHelper(unsigned char* base, unsigned char* end, unsigned char* bytes, unsigned long length)
-{	
+{
 	TRY_SEGV()
 		while (base < end)
 		{
@@ -247,17 +247,17 @@ CPointer* CPointer::GetVirtualFunc(int iIndex)
 }
 
 CPointer* CPointer::Realloc(int iSize)
-{ 
-	return new CPointer((unsigned long) UTIL_Realloc((void *) m_ulAddr, iSize)); 
+{
+	return new CPointer((unsigned long) UTIL_Realloc((void *) m_ulAddr, iSize));
 }
 
 CFunction* CPointer::MakeFunction(CFunctionInfo& info)
 {
 	Validate();
 	return new CFunction(
-		m_ulAddr, 
+		m_ulAddr,
 		object(info.m_eCallingConvention),
-		info.GetArgumentTypes(), 
+		info.GetArgumentTypes(),
 		object(info.m_eReturnType)
 	);
 }
@@ -283,14 +283,14 @@ CFunction* CPointer::MakeVirtualFunction(CFunctionInfo& info)
 		BOOST_RAISE_EXCEPTION(PyExc_ValueError, "Function is not a virtual function.")
 
 	return new CFunction(
-		GetVirtualFuncHelper(m_ulAddr + info.m_iVtableOffset, info.m_iVtableIndex), 
+		GetVirtualFuncHelper(m_ulAddr + info.m_iVtableOffset, info.m_iVtableIndex),
 		object(info.m_eCallingConvention),
-		info.GetArgumentTypes(), 
+		info.GetArgumentTypes(),
 		object(info.m_eReturnType)
 	);
 }
 
-void CPointer::CallCallback(PyObject* self, char* szCallback)
+void CPointer::CallCallback(PyObject* self, const char* szCallback)
 {
 	if (PyObject_HasAttrString(self, szCallback))
 	{
@@ -323,7 +323,7 @@ CPointer* CPointer::PreRealloc(PyObject* self, int iSize)
 	CPointer* pointer = extract<CPointer *>(self);
 	return pointer->Realloc(iSize);
 }
- 
+
 void CPointer::__del__(PyObject* self)
 {
 	// This can happens when a subclass fails to initialize before we properly did.
@@ -339,7 +339,7 @@ void CPointer::__del__(PyObject* self)
 		PreDealloc(self);
 	}
 }
- 
+
 IBaseType* CPointer::GetTypeInfo()
 {
 	Validate();

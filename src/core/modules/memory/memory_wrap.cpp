@@ -136,7 +136,7 @@ void export_binary_file(scope _memory)
 			args("identifier"),
 			manage_new_object_policy()
 		)
-	
+
 		// Attributes
 		.def_readwrite("module",
 			&CBinaryFile::m_ulModule,
@@ -215,7 +215,7 @@ void export_pointer(scope _memory)
 			"Returns the value at the memory location.",
 			(arg("offset")=0)
 		)
-		
+
 		.def("set_pointer",
 			&CPointer::SetPtr,
 			"Sets the value at the given memory location.",
@@ -360,7 +360,7 @@ void export_pointer(scope _memory)
 
         .def(self >= other<unsigned long>())
         .def(self >= self)
-		
+
         .def("__add__", &CPointer::operator+<unsigned long>, manage_new_object_policy())
         .def("__add__", &CPointer::operator+<CPointer>, manage_new_object_policy())
 
@@ -369,7 +369,7 @@ void export_pointer(scope _memory)
 
         .def(self -= int())
         .def(self -= self)
-		
+
         .def("__sub__", &CPointer::operator-<unsigned long>, manage_new_object_policy())
         .def("__sub__", &CPointer::operator-<CPointer>, manage_new_object_policy())
 
@@ -377,7 +377,7 @@ void export_pointer(scope _memory)
         .def("__rsub__", &CPointer::operator-<CPointer>, manage_new_object_policy())
 
 		// Attributes
-		.def_readwrite("address", 
+		.def_readwrite("address",
 			&CPointer::m_ulAddr
 		)
 
@@ -413,14 +413,14 @@ void export_type_info(scope _memory)
 	);
 
 	TypeInfo.def(
-		"is_derived_from", 
+		"is_derived_from",
 		GET_METHOD(bool, IBaseType, IsDerivedFrom, IBaseType*),
 		"Return True if the type is derived from the given class name."
 	);
 
 	TypeInfo.def(
-		"__iter__", 
-		&IBaseTypeExt::__iter__, 
+		"__iter__",
+		&IBaseTypeExt::__iter__,
 		manage_new_object_policy(),
 		"Return an iterator to iterate over all base classes."
 	);
@@ -771,7 +771,7 @@ void export_registers(scope _memory)
 		.def_readonly("ch", &CRegisters::m_ch)
 		.def_readonly("dh", &CRegisters::m_dh)
 		.def_readonly("bh", &CRegisters::m_bh)
-		
+
 		.def_readonly("ax", &CRegisters::m_ax)
 		.def_readonly("cx", &CRegisters::m_cx)
 		.def_readonly("dx", &CRegisters::m_dx)
@@ -780,7 +780,7 @@ void export_registers(scope _memory)
 		.def_readonly("bp", &CRegisters::m_bp)
 		.def_readonly("si", &CRegisters::m_si)
 		.def_readonly("di", &CRegisters::m_di)
-		
+
 		.def_readonly("eax", &CRegisters::m_eax)
 		.def_readonly("ecx", &CRegisters::m_ecx)
 		.def_readonly("edx", &CRegisters::m_edx)
@@ -789,7 +789,7 @@ void export_registers(scope _memory)
 		.def_readonly("ebp", &CRegisters::m_ebp)
 		.def_readonly("esi", &CRegisters::m_esi)
 		.def_readonly("edi", &CRegisters::m_edi)
-		
+
 		.def_readonly("mm0", &CRegisters::m_mm0)
 		.def_readonly("mm1", &CRegisters::m_mm1)
 		.def_readonly("mm2", &CRegisters::m_mm2)
@@ -798,7 +798,7 @@ void export_registers(scope _memory)
 		.def_readonly("mm5", &CRegisters::m_mm5)
 		.def_readonly("mm6", &CRegisters::m_mm6)
 		.def_readonly("mm7", &CRegisters::m_mm7)
-		
+
 		.def_readonly("xmm0", &CRegisters::m_xmm0)
 		.def_readonly("xmm1", &CRegisters::m_xmm1)
 		.def_readonly("xmm2", &CRegisters::m_xmm2)
@@ -807,14 +807,14 @@ void export_registers(scope _memory)
 		.def_readonly("xmm5", &CRegisters::m_xmm5)
 		.def_readonly("xmm6", &CRegisters::m_xmm6)
 		.def_readonly("xmm7", &CRegisters::m_xmm7)
-		
+
 		.def_readonly("cs", &CRegisters::m_cs)
 		.def_readonly("ss", &CRegisters::m_ss)
 		.def_readonly("ds", &CRegisters::m_ds)
 		.def_readonly("es", &CRegisters::m_es)
 		.def_readonly("fs", &CRegisters::m_fs)
 		.def_readonly("gs", &CRegisters::m_gs)
-		
+
 		.def_readonly("st0", &CRegisters::m_st0)
 
 		// The following registers are currently not supported by DynamicHooks
@@ -947,7 +947,7 @@ void export_functions(scope _memory)
 		":param bool srv_check: If True it will automatically check the binary for the '_srv' ending on Linux.",
 		reference_existing_object_policy()
 	);
-	
+
 	def("alloc",
 		Alloc,
 		("size", arg("auto_dealloc")=true),
@@ -1014,20 +1014,26 @@ void export_functions(scope _memory)
 		":param bool disabled: If ``True``, hook callbacks are disabled.");
 }
 
+dict& DeferredDict::get() {
+    if (!_pDict) {
+        _pDict = std::make_shared<dict>();
+    }
+    return *_pDict;
+}
 
 // ============================================================================
 // >> GLOBAL VARIABLES
 // ============================================================================
-dict g_oExposedClasses;
-dict g_oClassInfo;
+DeferredDict g_oClassInfo;
+DeferredDict g_oExposedClasses;
 
 #define ADD_NATIVE_TYPE_SIZE(name, type) \
 	scope().attr("TYPE_SIZES")[name] = sizeof(type);
 
 void export_global_variables(scope _memory)
 {
-	_memory.attr("EXPOSED_CLASSES") = g_oExposedClasses;
-	_memory.attr("CLASS_INFO") = g_oClassInfo;
+	_memory.attr("EXPOSED_CLASSES") = g_oExposedClasses.get();
+	_memory.attr("CLASS_INFO") = g_oClassInfo.get();
 
 	// Don't remove this! It's required for the ADD_NATIVE_TYPE_SIZE macro.
 	_memory.attr("TYPE_SIZES") = dict();
@@ -1060,7 +1066,7 @@ void export_global_variables(scope _memory)
 void export_protection(scope _memory)
 {
 	enum_<Protection_t> Protection("Protection");
-	
+
 	Protection.value("NONE", PROTECTION_NONE);
 	Protection.value("READ", PROTECTION_READ);
 	Protection.value("READ_WRITE", PROTECTION_READ_WRITE);
