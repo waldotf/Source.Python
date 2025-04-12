@@ -26,7 +26,7 @@ __all__ = ('VERSION',
 # >> CONSTANTS
 # =============================================================================
 #: Version of the Source.Python intallation.
-VERSION = None
+VERSION = 726
 
 #: The Github commit this Source.Python version was built with.
 GIT_COMMIT = None

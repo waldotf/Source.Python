@@ -91,7 +91,7 @@ def load():
     setup_user_settings()
     setup_entities_listener()
     setup_versioning()
-    setup_sqlite()
+    #setup_sqlite()
 
 
 def unload():

@@ -90,7 +90,7 @@ __all__ = ('AutoUnload',
 # >> GLOBAL VARIABLES
 # =============================================================================
 # Get the specific game for the server
-GAME_NAME = GAME_PATH.namebase
+GAME_NAME = GAME_PATH.stem
 
 # Get the platform the server is on
 PLATFORM = system().lower()
@@ -222,7 +222,7 @@ class Tokenize(list):
 
 class ConfigFile(list):
     """Class used to parse a configuration file."""
-    
+
     def __init__(
         self, path, encoding='utf-8', comment_prefix='//', as_strings=False):
         """Parses the given configuation file path.
@@ -238,11 +238,11 @@ class ConfigFile(list):
             argument lists.
         """
         # If the given path doesn't exist, search for it in the cfg directory
-        if not path.isfile():
+        if not path.is_file():
             path = CFG_PATH.joinpath(path)
 
             # If no file was found, return an empty list
-            if not path.isfile():
+            if not path.is_file():
                 return
 
         # Import this here to fix cyclic imports
